@@ -136,8 +136,9 @@
 				$result = $database->query($sql);
 
 				if ($result) {   	
-					$_SESSION['message'] = "Registro removido com sucesso.";
-					$_SESSION['type'] = 'success';
+					//$_SESSION['message'] = "Registro removido com sucesso.";
+					//$_SESSION['type'] = 'success';
+					header('Location: ' . BASEURL . 'index.php');
 				}
 			}
 		} catch (Exception $e) { 
@@ -154,5 +155,41 @@
 	function find_all($table) {
 		return find($table);
 	}
+	
+	/**
+ * Pesquisa registros pelo parâmetro $p que foi passado
+ */
+function filter( $table = null, $p = null ) {
+    $database = open_database();
+    $found = null;
+
+    try {
+        if ($p) {
+            $sql = "SELECT * FROM " . $table . " WHERE " . $p;
+            $result = $database->query($sql);
+            if ($result->num_rows > 0) {
+                $found = array();
+                while ($row = $result->fetch_assoc()) {
+                    array_push($found, $row);
+                }
+            } else {
+                throw new Exception("Não foram encontrados registros de dados!");
+            }
+        }
+    } catch (Exception $e) {
+        $_SESSION['message'] = "Ocorreu um erro: " . $e->getMessage();
+        $_SESSION['type'] = "danger";
+    }
+
+    close_database($database);
+    return $found;
+}
+
+//função para limpar mensagens
+function clear_messages(){
+	$_SESSION['message']=null;
+	$_SESSION['type']=null;
+}
+
 
 ?>

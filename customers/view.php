@@ -1,11 +1,29 @@
 <?php 
 	include('functions.php'); 
+		if (!isset($_SESSION)) session_start();
+	if (isset($_SESSION['user'])){
+	  }
+	else {
+	  $_SESSION['message'] = "Você precisa estar logado para acessar esse recurso!";
+	  $_SESSION['type'] = "danger";
+	}
 	view($_GET['id']);
 	include(HEADER_TEMPLATE);
 ?>
 
-<h2 class="mt-2">Cliente <?php echo $customer['id']; ?></h2>
+<h2 class="mt-3">Cliente <?php echo $customer['id']; ?></h2>
 <hr>
+
+<?php if (!empty($_SESSION['message'])) : ?>
+					<div class="alert alert-<?php echo $_SESSION['type']; ?> alert-dismissible" role="alert">
+						<?php echo $_SESSION['message']; ?>
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+					<a href="../index.php">
+						<button type="button" class="btn btn-secondary mb-2">Voltar ao Menu Inicial</button>
+					</a>
+					<?php clear_messages(); ?>
+					<?php else : ?>
 
 <?php if (!empty($_SESSION['message'])) : ?>
 	<div class="alert alert-<?php echo $_SESSION['type']; ?>">
@@ -66,5 +84,7 @@
 	  </a>
 	</div>
 </div>
+
+<?php endif; ?>
 
 <?php include(FOOTER_TEMPLATE); ?>

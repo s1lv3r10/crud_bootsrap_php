@@ -12,6 +12,11 @@
 	function index() {
 		global $customers;
 		$customers = find_all('customers');
+		if(!empty($_POST['clientes'])){
+			$products=filter("custormers","marca like '%".$_POST['clientes']."%'");
+		} else {
+			$products=find_all("customers");
+		}
 	}
 	
 	/**
@@ -46,10 +51,10 @@
 		// Verifica se é CPF ou CNPJ
 		if (strlen($numero) === 11) {
 			// Formata como CPF: XXX.XXX.XXX-XX
-			return substr($numero, 0,3).'.'.substr($numero, 3,3).'.'.substr($numero, 6,3).'-'.substr($numero, 7,2);
+			return substr($numero, 0,3).'.'.substr($numero, 3,3).'.'.substr($numero, 6,3).'-'.substr($numero, 9,2);
 		} elseif (strlen($numero) === 14) {
 			// Formata como CNPJ: XX.XXX.XXX/XXXX-XX
-			return substr($numero, 0,2).'.'.substr($numero, 3,3).'.'.substr($numero, 5,3).'/'.substr($numero, 8,4).'-'.substr($numero,12,2);
+			return substr($numero, 0,2).'.'.substr($numero, 2,3).'.'.substr($numero, 5,3).'/'.substr($numero, 8,4).'-'.substr($numero,12,2);
 		} else {
 			return 'Número inválido';
 		}

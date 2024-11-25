@@ -12,6 +12,11 @@
 	function index() {
 		global $products;
 		$products = find_all('tabeladados');
+		if(!empty($_POST['produtos'])){
+			$products=filter("tabeladados","marca like '%".$_POST['produtos']."%'");
+		} else {
+			$products=find_all("tabeladados");
+		}
 	}
 	
 	/**
